@@ -186,7 +186,10 @@ public:
 
         // 97: RSSI
         k_param_rssi = 97,
-                
+
+        // 98: Arming
+        k_param_arming_link_to_safety = 98,
+
         //
         // 100: Inertial Nav
         //
@@ -408,7 +411,7 @@ public:
 
     AP_Int16        poshold_brake_rate;         // PosHold flight mode's rotation rate during braking in deg/sec
     AP_Int16        poshold_brake_angle_max;    // PosHold flight mode's max lean angle during braking in centi-degrees
-    
+
     // Waypoints
     //
     AP_Int32        rtl_loiter_time;
@@ -458,6 +461,8 @@ public:
 
     AP_Int8         throw_motor_start;
     AP_Int8         terrain_follow;
+
+    AP_Int8         arming_link_to_safety;
 
     // RC channels
     RC_Channel              rc_1;
@@ -564,7 +569,7 @@ public:
 
     // whether to enforce acceptance of packets only from sysid_my_gcs
     AP_Int8 sysid_enforce;
-    
+
 #if ADVANCED_FAILSAFE == ENABLED
     // advanced failsafe library
     AP_AdvancedFailsafe_Copter afs;

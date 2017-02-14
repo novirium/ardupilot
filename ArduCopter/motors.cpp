@@ -12,6 +12,25 @@ static uint32_t auto_disarm_begin;
 void Copter::arm_motors_check()
 {
     static int16_t arming_counter;
+    static bool safety_link_attempted_arm = false;
+
+    if (g.arming_link_to_safety){
+        // Arm and disarm motors when safety switch is armed/disarmed
+        // Arming/disarming will only be attempted once each switch state change
+        if ((hal.util->safety_switch_state() == AP_HAL::Util::SAFETY_ARMED) && (!safety_link_attempted_arm)) {
+            if (!init_arm_motors(false)) {
+                arming_counter = 0;
+            }
+            safety_link_attempted_arm=true;
+            return;
+
+        } else if ((hal.util->safety_switch_state() == AP_HAL::Util::SAFETY_DISARMED) && safety_link_attempted_arm) {
+            init_disarm_motors();
+            safety_link_attempted_arm=false;
+            auto_disarm_begin = millis();
+            return;
+        }
+    }
 
     // ensure throttle is down
     if (channel_throttle->get_control_in() > 0) {
@@ -271,7 +290,7 @@ void Copter::init_disarm_motors()
 void Copter::motors_output()
 {
 #if ADVANCED_FAILSAFE == ENABLED
-    // this is to allow the failsafe module to deliberately crash 
+    // this is to allow the failsafe module to deliberately crash
     // the vehicle. Only used in extreme circumstances to meet the
     // OBC rules
     if (g2.afs.should_crash_vehicle()) {
