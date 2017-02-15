@@ -952,7 +952,7 @@ const AP_Param::Info Copter::var_info[] = {
 
     // @Param: ARMING_LNKTOSAFE
     // @DisplayName: Automatically arm and disarm when safety switch is pressed
-    // @Description: This enables the use of the safety switch in the same manner as rudder arming. The throttle input still needs be zero for this to function. When the safety switch enables and disables the outputs, the aircraft will be armed and disarmed as well. Intended for situations where the flight controller is not actually being used to control flight (data recording, camera control system, etc.).
+    // @Description: This enables the use of the safety switch in the same manner as rudder arming. Arming/disarming will only be attempted once per safety switch state change. When the safety switch enables and disables the outputs, the aircraft will be armed and disarmed as well. Intended for situations where the flight controller is not actually being used to control flight (data recording, camera control system, etc.).
     // @Values: 0:Separate arming and safety switch,1:Linked arming and safety switch
     // @User: Advanced
     GSCALAR(arming_link_to_safety, "ARMING_LNKTOSAFE", 0),
